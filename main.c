@@ -17,13 +17,12 @@ int	main(int ac, char **av)
 	printf("%s", str);
 	str = get_next_line(fd);
 	printf("%s", str);
-/*.txt
 	while (str)
 	{
-		free(str);
 		str = get_next_line(fd);
+		printf("%s", str);
+		free(str);
 	}
-*/
 	close(fd);
 	return (0);
 }
