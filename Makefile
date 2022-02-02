@@ -5,7 +5,7 @@ B_SRC =
 OBJS = ${SRCS:.c=.o}
 B_OBJS = ${BONUS:.c=.o}
 FLAG = -D
-SIZE = BUFFER_SIZE=42
+SIZE = BUFFER_SIZE=32
 
 ${NAME}: ${OBJS}
 	${CC} ${FLAG} ${SIZE} ${SRC} -o ${NAME}

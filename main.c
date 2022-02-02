@@ -6,53 +6,26 @@ int	main(int ac, char **av)
 {
 	int fd;
 	char *str;
+	int i;
 
 	(void)ac;
 	puts("-----TEST-----");
 	if (ac == 1)
 		fd = open("./test01.txt", O_RDONLY);
 	else
-		fd = open(av[1], O_RDONLY);
+		fd = open(av [1], O_RDONLY);
 	str = get_next_line(fd);
-	printf("%s", str);
+	printf("(1)%s", str);
 	str = get_next_line(fd);
-	printf("%s", str);
-	while (str)
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-		free(str);
-	}
+	printf("(2)%s", str);
+	str = get_next_line(fd);
+	printf("(3)%s", str);
+//	while (str)
+//	{
+//		str = get_next_line(fd);
+//		printf("%s", str);
+//		free(str);
+//	}
 	close(fd);
 	return (0);
 }
-
-/*
-int main (int ac, char **av)
-{
-	int fd;
-	char *str;
-	int i;
-
-	puts("-----TEST-----");
-	if (ac == 1)
-		fd = open("./test01.txt", O_RDONLY);
-	else
-		fd = open(av[1], O_RDONLY);
-	str = get_next_line(fd);
-	printf("%s", str);
-	str = get_next_line(fd);
-	printf("%s", str);
-
-	i = 0;
-	while (str)
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-		free(str);
-		i++;
-	}
-
-	return (0);
-}
-*/

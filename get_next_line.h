@@ -4,9 +4,14 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-char	*get_next_line(int fd);
-int		input_by_line(int fd, char **str);
-//int		output_by_line(char **mem_line, char *str);
+typedef struct s_line {
+	char	*ret;
+	char	*mem;
+}	t_line;
+
+char 	*get_next_line(int fd);
+t_line	input_by_line(int fd, char *buff);
+char 	*output_by_line(t_line input);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *c);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
