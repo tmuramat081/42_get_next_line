@@ -2,54 +2,59 @@
 #include <stdio.h>
 #include <string.h>
 
-char	*input_by_line(int fd)
+t_line	input_by_line(int fd, char *buff)
 {	
-	char 		*str;
-	char 		*buff;
-	size_t		i;
+	t_line	input;	
+	char 	*p;
+	size_t	len_read;
 
-	buff = malloc(BUFFER_SIZE + 1);
-	i = 0;
-	while (i < BUFFER_SIZE)
+	len_read = read(fd, buff, BUFFER_SIZE);
+	if (len_read < 1)
 	{
-		if (!read(fd, &buff[i], 1) || buff[i] == '\n' )
-		{
-			buff[i + 1] = '\0';
-			str = ft_substr(buff, 0, i + 1);
-			free(buff);
-			return (str);
-		}
-		i++;
+		input.ret = ft_strdup(buff);
+		input.mem = NULL;
+		return (input);
 	}
-	buff[i] = '\0';
-	str = ft_substr(buff, 0, i + 1);
-	free (buff);
-	return (str);
-}
-
-int	output_by_line(char *mem_line, char *str)
-{
-	char	*ret;
-
-	if (!mem_line)
+	buff[len_read] = '\0';
+	p = memchr(buff, '\n', len_read);
+	if (p)
 	{
-		mem_line = ft_strdup(str);
-		ret = mem_line;
+		input.ret = ft_substr(buff, 0, p - buff);
+		input.mem = ft_strjoin(buff, p + 1);
 	}
 	else
-		ret = ft_strjoin(mem_line, str);
-	free(str);
-	str = NULL;
-	return (ret);
+	{
+		input.ret = NULL;
+		input.mem = ft_strjoin(buff, buff);
+	}
+	return (input);
+}
+
+char *output_by_line(char **mem_line, t_line input)
+{
+	char *cpy_line;
+
+	if (!*mem_line)
+		*mem_line = input.mem;
+	cpy_line = strdup(*mem_line);
+	free(*mem_line);
+	*mem_line = NULL;
+	*mem_line = ft_strjoin(cpy_line, input.mem);
+	return (input.ret);
 }
 
 char	*get_next_line(fd)
 {
 	static char		*mem_line;
-	char			*str;
-	int				flag;
+	char 			*buff;
+	t_line			input;
+	char			*output;
 
-	str = input_by_line(fd);
-	ret = output_by_line(mem_line, str);
-	return (ret);
+	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	input = input_by_line(fd, buff);
+	output = output_by_line(&mem_line, input);
+	free(buff);
+	if (!output)
+		get_next_line(fd);
+	return (output);
 }
