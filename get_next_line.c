@@ -51,6 +51,8 @@ char	*get_next_line(fd)
 	char			*output;
 
 	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buff)
+		return (NULL);
 	input = input_by_line(fd, buff);
 	output = output_by_line(&mem_line, input);
 	free(buff);
