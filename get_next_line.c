@@ -5,58 +5,80 @@
 t_line	input_by_line(int fd, char *buff)
 {	
 	t_line	input;	
-	char 	*p;
-	size_t	len_read;
+	char 	*ptr;
+	int		len_read;
 
 	len_read = read(fd, buff, BUFFER_SIZE);
-	if (len_read < 1)
+	if (len_read == -1)
 	{
-		input.ret = ft_strdup(buff);
-		input.mem = NULL;
+		input.nl = false;
 		return (input);
 	}
 	buff[len_read] = '\0';
-	p = memchr(buff, '\n', len_read);
-	if (p)
+	ptr = memchr(buff, '\n', len_read);
+	if (len_read == 0)
 	{
-		input.ret = ft_substr(buff, 0, p - buff);
-		input.mem = ft_strjoin(buff, p + 1);
+		input.ret = NULL;
+		input.mem = NULL;
+		input.nl = true;
+		return (input);
+	}
+	if (ptr)
+	{
+		input.ret = ft_substr(buff, 0, ptr - buff + 1);
+		input.mem = ft_substr(buff, ptr - buff + 1, len_read);
+		input.nl = true;
 	}
 	else
 	{
 		input.ret = NULL;
-		input.mem = ft_strjoin(buff, buff);
+		input.mem = ft_substr(buff, 0, len_read);
+		input.nl = false;
 	}
 	return (input);
 }
 
-char *output_by_line(char **mem_line, t_line input)
+char *output_by_line(t_line input)
 {
-	char *cpy_line;
-
-	if (!*mem_line)
-		*mem_line = input.mem;
-	cpy_line = strdup(*mem_line);
-	free(*mem_line);
-	*mem_line = NULL;
-	*mem_line = ft_strjoin(cpy_line, input.mem);
-	return (input.ret);
+	static	char *cache_memory;
+	char 		*ret;
+	
+	if (!cache_memory)
+	{
+		cache_memory = malloc(sizeof(char) * 1);
+		cache_memory[0] = '\0';
+	}
+	if (input.nl == true)
+	{
+		ret = ft_strjoin(cache_memory, input.ret);
+		free(cache_memory);
+		cache_memory = ft_strjoin(cache_memory, input.mem);
+	}
+	 if (input.nl == false)
+	{
+		ret = NULL;
+		cache_memory = ft_strjoin(cache_memory, input.mem);
+	}
+	return (ret);
 }
 
-char	*get_next_line(fd)
+char	*get_next_line(int fd)
 {
-	static char		*mem_line;
 	char 			*buff;
 	t_line			input;
 	char			*output;
 
 	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if (!buff)
+	if(!buff)
 		return (NULL);
 	input = input_by_line(fd, buff);
-	output = output_by_line(&mem_line, input);
 	free(buff);
-	if (!output)
+	buff = NULL;
+	if (!input.ret && !input.mem && input.nl == true)
+		return (NULL);
+	output = output_by_line(input);
+	if (input.nl == false)
 		get_next_line(fd);
-	return (output);
+	else	
+		return (output);
 }

@@ -1,13 +1,24 @@
 #include "get_next_line.h"
 
+char	*ft_strdup(const char *src)
+{
+	char		*p;
+	unsigned int len;
+
+	len = ft_strlen(src) + 1;
+	p = (char *) malloc (sizeof(char) * len);
+	if (!p)
+		return (NULL);
+	ft_strlcpy(p, src, len);
+	return (p);
+}
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char			*dest;
-	unsigned int	len_s1;
-	unsigned int	len_s2;
+	char	*dest;
+	size_t	len_s1;
+	size_t	len_s2;
 
-	if (!s1 || !s2)
-		return (NULL);
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	dest = (char *)malloc(sizeof(char) * (len_s1 + len_s2) + 1);
