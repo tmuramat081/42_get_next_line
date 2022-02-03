@@ -3,10 +3,12 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 typedef struct s_line {
 	char	*ret;
 	char	*mem;
+	bool	nl;
 }	t_line;
 
 char 	*get_next_line(int fd);

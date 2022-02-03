@@ -16,16 +16,20 @@ int	main(int ac, char **av)
 		fd = open(av [1], O_RDONLY);
 	str = get_next_line(fd);
 	printf("(1)%s", str);
+	free(str);
 	str = get_next_line(fd);
 	printf("(2)%s", str);
+	free(str);
 	str = get_next_line(fd);
 	printf("(3)%s", str);
-//	while (str)
-//	{
-//		str = get_next_line(fd);
-//		printf("%s", str);
-//		free(str);
-//	}
+	i = 0;
+	while (str)
+	{
+		str = get_next_line(fd);
+		printf("[%d]%s", i, str);
+		free(str);
+		i++;
+	}
 	close(fd);
 	return (0);
 }

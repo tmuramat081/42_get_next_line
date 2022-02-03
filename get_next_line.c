@@ -11,34 +11,54 @@ t_line	input_by_line(int fd, char *buff)
 	len_read = read(fd, buff, BUFFER_SIZE);
 	if (len_read == -1)
 	{
-		input.ret = NULL;
-		input.mem = NULL;
+		input.nl = false;
 		return (input);
 	}
 	buff[len_read] = '\0';
 	ptr = memchr(buff, '\n', len_read);
+	if (len_read == 0)
+	{
+		input.ret = NULL;
+		input.mem = NULL;
+		input.nl = true;
+		return (input);
+	}
 	if (ptr)
 	{
 		input.ret = ft_substr(buff, 0, ptr - buff + 1);
 		input.mem = ft_substr(buff, ptr - buff + 1, len_read);
+		input.nl = true;
 	}
 	else
 	{
 		input.ret = NULL;
 		input.mem = ft_substr(buff, 0, len_read);
+		input.nl = false;
 	}
 	return (input);
 }
 
 char *output_by_line(t_line input)
 {
-	static char	mem_line[BUFFER_SIZE];
-	char 		*ret;	
+	static	char *cache_memory;
+	char 		*ret;
 	
-	ret = ft_strjoin(mem_line, input.ret);
-	bzero(mem_line, BUFFER_SIZE);
-	ft_strlcat(mem_line, input.mem, BUFFER_SIZE);
-//	printf("[mem_line]%s\n", mem_line);
+	if (!cache_memory)
+	{
+		cache_memory = malloc(sizeof(char) * 1);
+		cache_memory[0] = '\0';
+	}
+	if (input.nl == true)
+	{
+		ret = ft_strjoin(cache_memory, input.ret);
+		free(cache_memory);
+		cache_memory = ft_strjoin(cache_memory, input.mem);
+	}
+	 if (input.nl == false)
+	{
+		ret = NULL;
+		cache_memory = ft_strjoin(cache_memory, input.mem);
+	}
 	return (ret);
 }
 
@@ -52,14 +72,13 @@ char	*get_next_line(int fd)
 	if(!buff)
 		return (NULL);
 	input = input_by_line(fd, buff);
-	if (!input.ret && !input.mem)
-		return (NULL);
 	free(buff);
 	buff = NULL;
-//	printf("[ret]%s\n", input.ret);
-//	printf("[mem]%s\n", input.mem);
+	if (!input.ret && !input.mem && input.nl == true)
+		return (NULL);
 	output = output_by_line(input);
-	if (!output)
+	if (input.nl == false)
 		get_next_line(fd);
-	return (output);
+	else	
+		return (output);
 }
