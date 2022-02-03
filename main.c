@@ -12,7 +12,7 @@ int	main(int ac, char **av)
 	if (ac == 1)
 		fd = open("./test01.txt", O_RDONLY);
 	else
-		fd = open(av [1], O_RDONLY);
+		fd = open(av[1], O_RDONLY);
 	str = get_next_line(fd);
 	printf("%s", str);
 	while (str)

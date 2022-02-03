@@ -11,13 +11,13 @@ t_line	input_by_line(int fd, char *buff)
 	size_read = read(fd, buff, BUFFER_SIZE);
 	if (size_read == - 1)
 		input.sts = ERROR;
-	else if (size_read == 0)
-		input.sts = END_OF_FILE;
 	else
 	{
 		buff[size_read] = '\0';
 		ptr = strchr(buff, '\n');
-		if (ptr)
+		if (size_read == 0)
+			input.sts = END_OF_FILE;
+		else if (ptr)
 		{
 			input.ret = ft_substr(buff, 0, ptr - buff + 1);
 			input.mem = ft_substr(buff, ptr - buff + 1, size_read);
@@ -25,7 +25,6 @@ t_line	input_by_line(int fd, char *buff)
 		}
 		else
 		{
-			input.ret = NULL;
 			input.mem = ft_substr(buff, 0, size_read);
 			input.sts = CONTINUE;
 		}
@@ -35,26 +34,30 @@ t_line	input_by_line(int fd, char *buff)
 
 char *output_by_line(t_line input)
 {
-	static char 	cache_memory[BUFFER_SIZE];
+	static char 	*memory;
+	char			*tmp;
 	char 			*ret;
 
 	ret = NULL;
+	if (!memory)
+		tmp = strdup("");
+	else
+		tmp = strdup(memory);
+	free(memory);
 	if (input.sts == END_OF_FILE)
 	{
-		ret = ft_strjoin(cache_memory, input.ret);
+		ret = ft_strdup(tmp);
+//		printf("[%s]\n", ret);
 	}
-	if (input.sts == RETURN)
-	{	
-		ret = ft_strjoin(cache_memory, input.ret);
-		bzero(cache_memory, BUFFER_SIZE);
-		ft_strlcat(cache_memory, input.mem, BUFFER_SIZE);
+	else if (input.sts == RETURN)
+	{
+		ret = ft_strjoin(tmp, input.ret);
+		memory = ft_strdup(input.mem);
 	}
 	else if (input.sts == CONTINUE)
-	{
-		ret = NULL;
-		ft_strlcat(cache_memory, input.mem, BUFFER_SIZE);
-	}
-//	printf("--%s--\n", cache_memory);
+ 		memory = ft_strjoin(tmp, input.mem);
+//	printf("--%s--\n", memory);
+	free(tmp);
 	return (ret);
 }
 
@@ -64,12 +67,14 @@ char	*get_next_line(int fd)
 	t_line			input;
 	char			*output;
 
+	if (fd < 0 || BUFFER_SIZE < 0)
+		return (NULL);
 	buff = malloc(sizeof(char) * BUFFER_SIZE);
 	if(!buff)
 		return (NULL);
 	input = input_by_line(fd, buff);
-//	printf("[ret:%s]", input.ret);
-//	printf("[mem:%s]", input.mem);
+//	printf("\n[ret:%s]", input.ret);
+//	printf("\n[mem:%s]", input.mem);
 	free(buff);
 	if (input.sts == ERROR || input.sts == END_OF_FILE)
 		return (NULL);
