@@ -6,7 +6,6 @@ int	main(int ac, char **av)
 {
 	int fd;
 	char *str;
-	int i;
 
 	(void)ac;
 	puts("-----TEST-----");
@@ -15,20 +14,12 @@ int	main(int ac, char **av)
 	else
 		fd = open(av [1], O_RDONLY);
 	str = get_next_line(fd);
-	printf("(1)%s", str);
-	free(str);
-	str = get_next_line(fd);
-	printf("(2)%s", str);
-	free(str);
-	str = get_next_line(fd);
-	printf("(3)%s", str);
-	i = 0;
+	printf("%s", str);
 	while (str)
 	{
-		str = get_next_line(fd);
-		printf("[%d]%s", i, str);
 		free(str);
-		i++;
+		str = get_next_line(fd);
+		printf("%s", str);
 	}
 	close(fd);
 	return (0);

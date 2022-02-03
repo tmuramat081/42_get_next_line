@@ -6,59 +6,55 @@ t_line	input_by_line(int fd, char *buff)
 {	
 	t_line	input;	
 	char 	*ptr;
-	int		len_read;
+	int		size_read;
 
-	len_read = read(fd, buff, BUFFER_SIZE);
-	if (len_read == -1)
-	{
-		input.nl = false;
-		return (input);
-	}
-	buff[len_read] = '\0';
-	ptr = memchr(buff, '\n', len_read);
-	if (len_read == 0)
-	{
-		input.ret = NULL;
-		input.mem = NULL;
-		input.nl = true;
-		return (input);
-	}
-	if (ptr)
-	{
-		input.ret = ft_substr(buff, 0, ptr - buff + 1);
-		input.mem = ft_substr(buff, ptr - buff + 1, len_read);
-		input.nl = true;
-	}
+	size_read = read(fd, buff, BUFFER_SIZE);
+	if (size_read == - 1)
+		input.sts = ERROR;
+	else if (size_read == 0)
+		input.sts = END_OF_FILE;
 	else
 	{
-		input.ret = NULL;
-		input.mem = ft_substr(buff, 0, len_read);
-		input.nl = false;
+		buff[size_read] = '\0';
+		ptr = strchr(buff, '\n');
+		if (ptr)
+		{
+			input.ret = ft_substr(buff, 0, ptr - buff + 1);
+			input.mem = ft_substr(buff, ptr - buff + 1, size_read);
+			input.sts = RETURN;
+		}
+		else
+		{
+			input.ret = NULL;
+			input.mem = ft_substr(buff, 0, size_read);
+			input.sts = CONTINUE;
+		}
 	}
 	return (input);
 }
 
 char *output_by_line(t_line input)
 {
-	static	char *cache_memory;
-	char 		*ret;
-	
-	if (!cache_memory)
-	{
-		cache_memory = malloc(sizeof(char) * 1);
-		cache_memory[0] = '\0';
-	}
-	if (input.nl == true)
+	static char 	cache_memory[BUFFER_SIZE];
+	char 			*ret;
+
+	ret = NULL;
+	if (input.sts == END_OF_FILE)
 	{
 		ret = ft_strjoin(cache_memory, input.ret);
-		free(cache_memory);
-		cache_memory = ft_strjoin(cache_memory, input.mem);
 	}
-	 if (input.nl == false)
+	if (input.sts == RETURN)
+	{	
+		ret = ft_strjoin(cache_memory, input.ret);
+		bzero(cache_memory, BUFFER_SIZE);
+		ft_strlcat(cache_memory, input.mem, BUFFER_SIZE);
+	}
+	else if (input.sts == CONTINUE)
 	{
 		ret = NULL;
-		cache_memory = ft_strjoin(cache_memory, input.mem);
+		ft_strlcat(cache_memory, input.mem, BUFFER_SIZE);
 	}
+//	printf("--%s--\n", cache_memory);
 	return (ret);
 }
 
@@ -68,17 +64,17 @@ char	*get_next_line(int fd)
 	t_line			input;
 	char			*output;
 
-	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buff = malloc(sizeof(char) * BUFFER_SIZE);
 	if(!buff)
 		return (NULL);
 	input = input_by_line(fd, buff);
+//	printf("[ret:%s]", input.ret);
+//	printf("[mem:%s]", input.mem);
 	free(buff);
-	buff = NULL;
-	if (!input.ret && !input.mem && input.nl == true)
+	if (input.sts == ERROR || input.sts == END_OF_FILE)
 		return (NULL);
 	output = output_by_line(input);
-	if (input.nl == false)
+	if(!output)
 		get_next_line(fd);
-	else	
-		return (output);
+	return (output);
 }

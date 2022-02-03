@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-char	*ft_strdup(const char *src)
+char	*ft_strdup(char *src)
 {
 	char		*p;
 	unsigned int len;
@@ -13,7 +13,7 @@ char	*ft_strdup(const char *src)
 	return (p);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*dest;
 	size_t	len_s1;
@@ -29,7 +29,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (dest);
 }
 
-char	*ft_substr(const char *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*ret;
 	char	*tmp;
@@ -46,7 +46,7 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	return (ret);
 }
 
-size_t	ft_strlen(const char *c)
+size_t	ft_strlen(char *c)
 {
 	int	i;
 	int	cnt;
@@ -61,7 +61,7 @@ size_t	ft_strlen(const char *c)
 	return (cnt);
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcat(char *dst, char *src, size_t dstsize)
 {
 	unsigned int		d_len;
 	unsigned int		s_len;
