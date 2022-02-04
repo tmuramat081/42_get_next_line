@@ -2,84 +2,65 @@
 #include <stdio.h>
 #include <string.h>
 
-t_line	input_by_line(int fd, char *buff)
+char	*read_buffer(int fd, char *cpy_memory)
 {	
-	t_line	input;	
-	char 	*ptr;
-	int		size_read;
+	char	*buff;
+	ssize_t	buf_size;
+	char	*input;
 
-	size_read = read(fd, buff, BUFFER_SIZE);
-	if (size_read == - 1)
-		input.sts = ERROR;
-	else
-	{
-		buff[size_read] = '\0';
-		ptr = strchr(buff, '\n');
-		if (size_read == 0)
-			input.sts = END_OF_FILE;
-		else if (ptr)
-		{
-			input.ret = ft_substr(buff, 0, ptr - buff + 1);
-			input.mem = ft_substr(buff, ptr - buff + 1, size_read);
-			input.sts = RETURN;
-		}
-		else
-		{
-			input.mem = ft_substr(buff, 0, size_read);
-			input.sts = CONTINUE;
-		}
-	}
+	buff = malloc(sizeof(char) * BUFFER_SIZE　+ 1);
+	if (!buff)
+		return (NULL);
+	buf_size = read(fd, buff, BUFFER_SIZE);
+	if (buf_size < 1)
+		return (NULL);
+	buff[buf_size] = '\0';
+	*input = strjoin(cpy_memory, buff);
+	free(buff);
+	buff = NULL;
 	return (input);
 }
 
-char *output_by_line(t_line input)
+char	*output_by_line(char *input, char **memory)
 {
-	static char 	*memory;
-	char			*tmp;
-	char 			*ret;
+	char 	*ptr;
+	char 	*ret_line;
 
-	ret = NULL;
-	if (!memory)
-		tmp = strdup("");
+	if(ptr = strchr(input, '\0'))
+	{
+		ret_line = ft_substr(input, 0, ptr - input + 1);
+		*memory = ft_substr(input, ptr - input + 1, strlen(input));
+	}
 	else
-		tmp = strdup(memory);
-	free(memory);
-	if (input.sts == END_OF_FILE)
-	{
-		ret = ft_strdup(tmp);
-//		printf("[%s]\n", ret);
-	}
-	else if (input.sts == RETURN)
-	{
-		ret = ft_strjoin(tmp, input.ret);
-		memory = ft_strdup(input.mem);
-	}
-	else if (input.sts == CONTINUE)
- 		memory = ft_strjoin(tmp, input.mem);
-//	printf("--%s--\n", memory);
-	free(tmp);
-	return (ret);
+		ret_line = NULL;
+	return(ret_line);
 }
 
 char	*get_next_line(int fd)
 {
-	char 			*buff;
-	t_line			input;
-	char			*output;
+	static char	*memory;
+	char		*cpy_memory;
+	char		*input;
+	char		*ret_line;
 
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	buff = malloc(sizeof(char) * BUFFER_SIZE);
-	if(!buff)
-		return (NULL);
-	input = input_by_line(fd, buff);
-//	printf("\n[ret:%s]", input.ret);
-//	printf("\n[mem:%s]", input.mem);
-	free(buff);
-	if (input.sts == ERROR || input.sts == END_OF_FILE)
-		return (NULL);
-	output = output_by_line(input);
-	if(!output)
+	if (!memory)
+		memory = strdup("");
+	else
+	{
+		cpy_memory = strdup(memory);
+		free(memory);
+		memory = NULL;
+	}
+	if (!strchr(memory, '\n'))
+	{
+		input = read_buffer(fd, memory);
+		if (input == NULL)
+			return (NULL);
+	}
+	ret_line = output_by_line(input, &memory);
+	if (!ret_line)
 		get_next_line(fd);
-	return (output);
+	return (input.ret);
 }
