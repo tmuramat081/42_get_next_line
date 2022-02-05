@@ -8,7 +8,6 @@ int	main(int ac, char **av)
 {
 	int fd;
 	char *str;
-	int i;
 
 	(void)ac;
 	puts("-----TEST-----");
@@ -18,7 +17,7 @@ int	main(int ac, char **av)
 		fd = open(av[1], O_RDONLY);
 	str = get_next_line(fd);
 	printf("[00]%s", str);
-	i = 1;
+	int i = 1;
 	while (str)
 	{
 		free(str);

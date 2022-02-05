@@ -1,6 +1,6 @@
 NAME = gnl
 CC = gcc -Wall -Wextra -Werror
-SRC = get_next_line.c get_next_line_utils.c main.c
+SRC = get_next_line.c get_next_line_utils.c main.c libft.a
 B_SRC = 
 OBJS = ${SRCS:.c=.o}
 B_OBJS = ${BONUS:.c=.o}

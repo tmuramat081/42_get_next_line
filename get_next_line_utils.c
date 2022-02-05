@@ -29,6 +29,40 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (dest);
 }
 
+
+void	*ft_memchr(void *buff, int ch, size_t n)
+{
+	char	*p;
+
+	p = buff;
+	while (n--)
+	{
+		if (*p == ch)
+			return (p);
+		p++;
+	}
+	return (NULL);
+}
+
+
+char	*ft_strchr(const char *s, char c)
+{
+	int		i;
+	char	*s1;
+
+	s1 = (char *)s;
+	i = 0;
+	while (1)
+	{
+		if (s1[i] == c)
+			return (&s1[i]);
+		if (s1[i] == '\0')
+			break ;
+		i++;
+	}
+	return (NULL);
+}
+
 char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*ret;
