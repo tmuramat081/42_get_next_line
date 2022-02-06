@@ -3,15 +3,22 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-#include <stdbool.h>
+# include <stdbool.h>
+# include <limits.h>
 
 typedef struct s_line {
 	char	*str;
 	char	*ptr_nl;
+	int		sts;
 } t_line;
 
+#define CONTINUE 2
+#define RETURN 1
+#define END_OF_FILE 0
+#define ERROR -1
+
 char 	*get_next_line(int fd);
-char	*read_buffer(int fd);
+void	read_buffer(int fd, t_line	*memory);
 void	save_memory(char *buff, t_line	*memory);
 char	*output_one_line(t_line *memory);
 char	*ft_strjoin(char *s1, char *s2);
