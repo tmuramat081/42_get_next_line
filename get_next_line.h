@@ -12,10 +12,11 @@ typedef struct s_line {
 	int		sts;
 } t_line;
 
-#define CONTINUE 2
 #define RETURN 1
-#define END_OF_FILE 0
+#define CONTINUE 0
 #define ERROR -1
+#define END_OF_FILE -2
+
 
 char 	*get_next_line(int fd);
 void	read_buffer(int fd, t_line	*memory);

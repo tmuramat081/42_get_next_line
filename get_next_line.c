@@ -19,6 +19,7 @@ void	read_buffer(int fd, t_line *memory)
 	buff[buf_size] = '\0';
 	tmp_str = ft_strjoin(memory->str, buff);
 	free(memory->str);
+	memory->str = NULL;
 	memory->str = tmp_str;
 	memory->ptr_nl = ft_strchr(memory->str, '\n');
 	if (memory->ptr_nl)
@@ -30,9 +31,12 @@ char	*output_one_line(t_line *memory)
 	char 	*ret_line;
 	char	*tmp_memory;
 
+	if (memory->sts == END_OF_FILE && !memory->ptr_nl)
+		return (memory->str);
 	ret_line = ft_substr(memory->str, 0, memory->ptr_nl - memory->str + 1);
 	tmp_memory = ft_strdup(memory->ptr_nl + 1);
 	free(memory->str);
+	memory->str = NULL;
 	memory->str = tmp_memory;
 	memory->ptr_nl = ft_strchr(memory->str, '\n');
 	if (!memory->ptr_nl)
@@ -47,11 +51,10 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 0 || INT_MAX <= BUFFER_SIZE)
 		return (NULL);
+	if (memory.sts == END_OF_FILE)
+		return (NULL);
 	if (!memory.str)
-	{
 		memory.str = strdup("");
-		memory.sts = CONTINUE;
-	}
 	while (memory.sts == CONTINUE)
 	{
 		read_buffer(fd, &memory);

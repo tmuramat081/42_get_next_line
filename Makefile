@@ -1,11 +1,11 @@
 NAME = gnl
-CC = gcc -Wall -Wextra -Werror
+CC = gcc -Wall -Wextra -Werror -g -fsanitize=address
 SRC = get_next_line.c get_next_line_utils.c main.c libft.a
 B_SRC = 
 OBJS = ${SRCS:.c=.o}
 B_OBJS = ${BONUS:.c=.o}
 FLAG = -D
-SIZE = BUFFER_SIZE=42
+SIZE = BUFFER_SIZE=1024
 
 ${NAME}: ${OBJS}
 	${CC} ${FLAG} ${SIZE} ${SRC} -o ${NAME}

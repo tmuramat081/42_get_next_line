@@ -19,10 +19,12 @@ int	main(int ac, char **av)
 	while (str)
 	{
 		free(str);
+		str = NULL;
 		str = get_next_line(fd);
 		printf("[%02d]%s", i, str);
 		i++;
 	}
+	free(str);
 	close(fd);
 	return (0);
 }
