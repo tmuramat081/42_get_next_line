@@ -1,15 +1,15 @@
 #include "get_next_line.h"
 
-char	*ft_strdup(char *src)
+char	*ft_strdup(const char *src)
 {
-	char		*p;
-	unsigned int len;
+	char	*p;
+	size_t	len;
 
-	len = ft_strlen(src) + 1;
-	p = (char *) malloc (sizeof(char) * len);
+	len = ft_strlen(src);
+	p = (char *) malloc (sizeof(char) * (len + 1));
 	if (!p)
 		return (NULL);
-	ft_strlcpy(p, src, len);
+	ft_strlcpy(p, src, len + 1);
 	return (p);
 }
 
@@ -29,22 +29,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (dest);
 }
 
-
-void	*ft_memchr(void *buff, int ch, size_t n)
-{
-	char	*p;
-
-	p = buff;
-	while (n--)
-	{
-		if (*p == ch)
-			return (p);
-		p++;
-	}
-	return (NULL);
-}
-
-
 char	*ft_strchr(const char *s, char c)
 {
 	int		i;
@@ -63,35 +47,41 @@ char	*ft_strchr(const char *s, char c)
 	return (NULL);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*ret;
-	char	*tmp;
-	size_t	i;
+	char	*dest;
+	size_t	s_len;
+	size_t	d_len;
 
-	ret = malloc(sizeof(char) * (len + 1));
-	if (!ret)
-		return (0);
-	tmp = (char *)s + start;
-	i = 0;
-	while (*tmp && i < len)
-		ret[i++] = *tmp++;
-	ret[i] = 0;
-	return (ret);
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (s_len < start + len)
+		d_len = s_len - start;
+	else
+		d_len = len;
+	if (!len || s_len <= start)
+	{	
+		dest = malloc(sizeof(char));
+		*dest = '\0';
+		return (dest);
+	}
+	dest = malloc(sizeof(char) * (d_len + 1));
+	if (!dest)
+		return (NULL);
+	ft_strlcpy(dest, &s[start], d_len + 1);
+	return (dest);
 }
 
-size_t	ft_strlen(char *c)
+size_t	ft_strlen(const char *c)
 {
-	int	i;
-	int	cnt;
+	size_t	cnt;
 
+	if (!c)
+		return (0);
 	cnt = 0;
-	i = 0;
-	while (c[i] != '\0')
-	{
+	while (*c++ != '\0')
 		cnt += 1;
-		i++;
-	}
 	return (cnt);
 }
 
