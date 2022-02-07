@@ -17,7 +17,6 @@ typedef struct s_line {
 #define ERROR -1
 #define END_OF_FILE -2
 
-
 char 	*get_next_line(int fd);
 void	read_buffer(int fd, t_line	*memory);
 void	save_memory(char *buff, t_line	*memory);
