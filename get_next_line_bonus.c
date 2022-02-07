@@ -6,7 +6,7 @@
 /*   By: tmuramat <mt15hydrangea@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:25 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/07 17:06:09 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/07 17:32:05 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,25 @@ char	*output_one_line(t_buff *input)
 
 char	*get_next_line(int fd)
 {
-	static t_buff	input;
+	static t_buff	input[1024];
 	char			*buff;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || input.sts == END_OF_FILE)
+	if (fd < 0 || BUFFER_SIZE <= 0 || 1024 < fd || input[fd].sts == END_OF_FILE)
 		return (NULL);
-	if (!input.mem)
-		input.mem = ft_strdup("");
-	while (input.sts == CONTINUE)
+	if (!input[fd].mem)
+		input[fd].mem = ft_strdup("");
+	while (input[fd].sts == CONTINUE)
 	{
 		buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
 		if (!buff)
 			return (NULL);
-		read_buffer(fd, buff, &input);
-		if (input.sts == ERROR)
+		read_buffer(fd, buff, &input[fd]);
+		if (input[fd].sts == ERROR)
 		{
 			free(buff);
 			return (NULL);
 		}
 		free(buff);
 	}
-	return (output_one_line(&input));
+	return (output_one_line(&input[fd]));
 }
