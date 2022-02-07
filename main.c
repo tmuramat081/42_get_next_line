@@ -15,13 +15,12 @@ int	main(int ac, char **av)
 		fd = open(av[1], O_RDONLY);
 	str = get_next_line(fd);
 	printf("%s", str);
-	free(str);
 	int i = 1;
-	while (i < 6)
+	while (str)
 	{
-		str = get_next_line(fd);
-		printf("[%02d]%s", i, str);
 		free(str);
+		str = get_next_line(fd);
+		printf("%s", str);
 		i++;
 	}
 	close(fd);

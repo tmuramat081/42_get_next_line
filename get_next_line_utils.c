@@ -6,7 +6,7 @@
 /*   By: tmuramat <mt15hydrangea@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:32 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/07 16:49:35 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/07 18:11:08 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char	*ft_strchr(const char *s, char c)
 	int		i;
 	char	*s1;
 
+	if (!s)
+		return (NULL);
 	s1 = (char *)s;
 	i = 0;
 	while (1)
