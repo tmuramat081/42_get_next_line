@@ -14,17 +14,16 @@ int	main(int ac, char **av)
 	else
 		fd = open(av[1], O_RDONLY);
 	str = get_next_line(fd);
-	printf("[00]%s", str);
+	printf("%s", str);
+	free(str);
 	int i = 1;
-	while (str)
+	while (i < 6)
 	{
-		free(str);
-		str = NULL;
 		str = get_next_line(fd);
 		printf("[%02d]%s", i, str);
+		free(str);
 		i++;
 	}
-	free(str);
 	close(fd);
 	return (0);
 }
