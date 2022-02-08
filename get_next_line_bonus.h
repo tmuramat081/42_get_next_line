@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmuramat <mt15hydrangea@gmail.com>         +#+  +:+       +#+        */
+/*   By: tmuramat <tmuramat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:58:30 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/07 23:41:42 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/08 13:58:01 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_minfo {
 char	*get_next_line(int fd);
 void	read_buffer(int fd, char *buff, t_minfo *input);
 char	*output_one_line(t_minfo *input);
+char	*free_memory(t_minfo *input);
 char	*ft_strdup(const char *src);
 char	*ft_strjoin(char *s1, char *s2);
 size_t	ft_strlen(const char *c);
