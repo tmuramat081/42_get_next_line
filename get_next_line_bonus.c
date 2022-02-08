@@ -6,7 +6,7 @@
 /*   By: tmuramat <tmuramat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:25 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/08 14:05:06 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/08 14:29:25 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,8 @@ char	*get_next_line(int fd)
 	static t_minfo	input[1024];
 	char			*buff;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || 1024 < fd || input[fd].sts == END)
+	if (fd < 0 || 1024 < fd || BUFFER_SIZE <= 0 || input[fd].sts == END)
 		return (NULL);
-	if (!input[fd].mem)
-	{
-		input[fd].mem = ft_strdup("");
-		if (!input[fd].mem)
-			return (NULL);
-	}
 	while (input[fd].sts == CONTINUE)
 	{
 		buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
@@ -93,6 +87,6 @@ char	*get_next_line(int fd)
 		buff = NULL;
 	}
 	if (input[fd].sts == ERROR)
-		free_memory(&input[fd]);
+		return (free_memory(&input[fd]));
 	return (output_one_line(&input[fd]));
 }
