@@ -6,7 +6,7 @@
 /*   By: tmuramat <mt15hydrangea@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:25 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/07 19:29:13 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/07 23:34:16 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	read_buffer(int fd, char *buff, t_minfo *input)
 {	
 	ssize_t	buf_size;
-	char	*tmp_str;
+	char	*tmp_mem;
 
 	buf_size = read(fd, buff, BUFFER_SIZE);
 	if (buf_size == -1)
@@ -26,14 +26,14 @@ void	read_buffer(int fd, char *buff, t_minfo *input)
 	else if (buf_size == 0)
 		input->sts = END;
 	buff[buf_size] = '\0';
-	tmp_str = ft_strjoin(input->mem, buff);
+	tmp_mem = ft_strjoin(input->mem, buff);
 	if (!tmp_mem)
 	{
 		input->sts = ERROR;
 		return ;
 	}
 	free(input->mem);
-	input->mem = tmp_str;
+	input->mem = tmp_mem;
 	input->ptr_nl = ft_strchr(input->mem, '\n');
 	if (input->ptr_nl)
 		input->sts = RETURN;
@@ -71,7 +71,11 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || 1024 < fd || input[fd].sts == END)
 		return (NULL);
 	if (!input[fd].mem)
+	{
 		input[fd].mem = ft_strdup("");
+		if (!input[fd].mem)
+			return (NULL);
+	}
 	while (input[fd].sts == CONTINUE)
 	{
 		buff = malloc(sizeof(char) * BUFFER_SIZE + 1);

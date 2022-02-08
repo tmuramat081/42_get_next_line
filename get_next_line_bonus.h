@@ -6,7 +6,7 @@
 /*   By: tmuramat <mt15hydrangea@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:58:30 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/07 19:03:14 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/07 23:41:42 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define ERROR -1
 # define END -2
 
-typedef struct s_memory {
+typedef struct s_minfo {
 	char	*mem;
 	char	*ptr_nl;
 	int		sts;
