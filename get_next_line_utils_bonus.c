@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmuramat <mt15hydrangea@gmail.com>         +#+  +:+       +#+        */
+/*   By: tmuramat <tmuramat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:32 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/07 18:01:34 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/08 13:25:51 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

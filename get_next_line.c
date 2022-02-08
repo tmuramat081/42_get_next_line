@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmuramat <mt15hydrangea@gmail.com>         +#+  +:+       +#+        */
+/*   By: tmuramat <tmuramat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:25 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/07 20:25:14 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/08 13:24:53 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	read_buffer(int fd, char *buff, t_minfo *input)
 		return ;
 	}
 	free(input->mem);
+	input->mem = NULL;
 	input->mem = tmp_mem;
 	input->ptr_nl = ft_strchr(input->mem, '\n');
 	if (input->ptr_nl)
@@ -45,7 +46,10 @@ char	*output_one_line(t_minfo *input)
 	char	*tmp_memory;
 
 	if (*input->mem == '\0')
+	{
+		free(input->mem);
 		return (NULL);
+	}
 	else if (input->sts == END && !input->ptr_nl)
 		return (input->mem);
 	tmp_memory = ft_strdup(input->ptr_nl + 1);
@@ -56,6 +60,7 @@ char	*output_one_line(t_minfo *input)
 	if (!ret_line)
 		return (NULL);
 	free(input->mem);
+	input->mem = NULL;
 	input->mem = tmp_memory;
 	input->ptr_nl = ft_strchr(input->mem, '\n');
 	if (!input->ptr_nl)
@@ -85,6 +90,9 @@ char	*get_next_line(int fd)
 		free(buff);
 	}
 	if (input.sts == ERROR)
+	{
+		free(input.mem);
 		return (NULL);
+	}
 	return (output_one_line(&input));
 }

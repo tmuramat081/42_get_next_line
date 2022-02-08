@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmuramat <mt15hydrangea@gmail.com>         +#+  +:+       +#+        */
+/*   By: tmuramat <tmuramat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:25 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/07 23:34:16 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/08 13:22:14 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ char	*output_one_line(t_minfo *input)
 	char	*tmp_memory;
 
 	if (*input->mem == '\0')
+	{
+		free(input->mem);
 		return (NULL);
+	}
 	else if (input->sts == END && !input->ptr_nl)
 		return (input->mem);
 	tmp_memory = ft_strdup(input->ptr_nl + 1);
@@ -70,12 +73,6 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || 1024 < fd || input[fd].sts == END)
 		return (NULL);
-	if (!input[fd].mem)
-	{
-		input[fd].mem = ft_strdup("");
-		if (!input[fd].mem)
-			return (NULL);
-	}
 	while (input[fd].sts == CONTINUE)
 	{
 		buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
@@ -85,6 +82,9 @@ char	*get_next_line(int fd)
 		free(buff);
 	}
 	if (input[fd].sts == ERROR)
+	{
+		free(input[fd].mem);
 		return (NULL);
+	}
 	return (output_one_line(&input[fd]));
 }
