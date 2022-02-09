@@ -6,7 +6,7 @@
 /*   By: tmuramat <tmuramat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:32 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/08 13:25:51 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/08 19:58:38 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	len_s1;
 	size_t	len_s2;
 
+	if (!s1 || !s2)
+		return (NULL);
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	dest = (char *)malloc(sizeof(char) * (len_s1 + len_s2) + 1);

@@ -6,7 +6,7 @@
 /*   By: tmuramat <tmuramat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:49:25 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/08 14:10:12 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/09 21:02:38 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_next_line(int fd)
 	static t_minfo	input;
 	char			*buff;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || input.sts == END)
+	if (fd < 0 || FD_MAX <= fd || BUFFER_SIZE <= 0 || input.sts == END)
 		return (NULL);
 	if (!input.mem)
 	{
@@ -90,7 +90,6 @@ char	*get_next_line(int fd)
 			return (free_memory(&input));
 		read_buffer(fd, buff, &input);
 		free(buff);
-		buff = NULL;
 	}
 	if (input.sts == ERROR)
 		return (free_memory(&input));
