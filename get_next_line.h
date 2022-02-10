@@ -6,7 +6,7 @@
 /*   By: tmuramat <tmuramat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 16:58:30 by tmuramat          #+#    #+#             */
-/*   Updated: 2022/02/09 21:03:10 by tmuramat         ###   ########.fr       */
+/*   Updated: 2022/02/10 12:42:14 by tmuramat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 
 # define FD_MAX 256
 

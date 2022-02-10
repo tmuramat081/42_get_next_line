@@ -24,5 +24,6 @@ int	main(int ac, char **av)
 		i++;
 	}
 	close(fd);
+	printf("%d\n", FOPEN_MAX);
 	return (0);
 }

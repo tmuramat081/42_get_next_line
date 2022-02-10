@@ -24,7 +24,7 @@ int	main(void)
 	free(str2);
 	free(str3);
 	int i = 1;
-	while (i < 6)
+	while (i < 50)
 	{
 		str1 = get_next_line(fd[1]);
 		printf("[01]%s", str1);

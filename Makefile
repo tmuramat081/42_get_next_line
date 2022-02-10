@@ -6,7 +6,7 @@ B_SRC = get_next_line_bonus.c get_next_line_utils_bonus.c main_bonus.c
 OBJS = ${SRCS:.c=.o}
 B_OBJS = ${BONUS:.c=.o}
 FLAG = -D
-SIZE = BUFFER_SIZE=1000
+SIZE = BUFFER_SIZE=1024
 
 ${NAME}: ${OBJS}
 	${CC} ${FLAG} ${SIZE} ${SRC} -o ${NAME}
